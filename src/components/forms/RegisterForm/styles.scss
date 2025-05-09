@@ -1,0 +1,53 @@
+@use '../../../styles/scss/variables/colors' as *;
+@use '../../../styles/scss/mixins/typography' as *;
+
+.register-form {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 680px;
+  padding: 48px 40px;
+  gap: 24px;
+  background-color: $secondary-light-a;
+  border: 1px solid $primary-a;
+  border-radius: 16px;
+
+  &__title {
+    @include font-custom(24, 32, center, 'Montserrat', 600, $neutral-a);
+  }
+
+  &__paragraph {
+    @include font-custom(14, 16, justify, 'Montserrat', 400, $neutral-a);
+  }
+
+  &__form {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 16px;
+
+    &__name {
+      flex-basis: 100%;
+    }
+
+    &__phone {
+      flex-basis: 100px;
+      flex-grow: 1;
+    }
+
+    &__city {
+      flex-grow: 1;
+    }
+
+    &__email {
+      flex-basis: 100%;
+    }
+
+    &__password {
+      flex-grow: 1;
+    }
+
+    &__confirmation {
+      flex-grow: 1;
+    }
+  }
+}
