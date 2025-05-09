@@ -1,0 +1,35 @@
+@use '../../../styles/scss/variables/colors' as *;
+@use '../../../styles/scss/mixins/typography' as *;
+
+.header {
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px;
+  background-color: $primary-a;
+
+  &__container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    max-width: 1080px;
+
+    &__icon {
+      img {
+        width: 100%;
+        min-width: 145px;
+        height: auto;
+      }
+    }
+
+    &__navigation {
+      display: flex;
+      align-items: center;
+
+      span {
+        @include font-custom(14, 18, center, 'Montserrat', 500, $white);
+      }
+    }
+  }
+}
