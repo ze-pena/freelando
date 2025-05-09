@@ -1,0 +1,59 @@
+@use '../../../styles/scss/variables/colors' as *;
+@use '../../../styles/scss/mixins/typography' as *;
+
+.footer {
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px;
+  background-color: $primary-a;
+
+  &__container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    max-width: 1080px;
+
+    &__message {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      img {
+        width: 100%;
+        max-width: 145px;
+        height: auto;
+      }
+
+      span {
+        @include font-custom(12, 16, left, 'Montserrat', 400, $white);
+      }
+    }
+
+    &__social {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      span {
+        @include font-custom(12, 16, center, 'Montserrat', 400, $white);
+      }
+
+      ul {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        li {
+          img {
+            width: 100%;
+            max-width: 42px;
+            height: auto;
+          }
+        }
+      }
+    }
+  }
+}
