@@ -1,0 +1,119 @@
+@use '../../../styles/scss/variables/colors' as *;
+@use '../../../styles/scss/mixins/typography' as *;
+
+.select-input {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 24px;
+
+  &__label {
+    @include font-custom(12, 14, left, 'Montserrat', 500, $neutral-a);
+  }
+
+  &__combo-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+
+    &[data-is-open='false'] &__value {
+      border-radius: 16px;
+    }
+
+    &[data-is-open='true'] &__value {
+      border-radius: 16px 16px 0 0;
+    }
+
+    &[data-is-open='true'] &__value > img {
+      transform: translate(-100%, -50%) rotate(180deg);
+    }
+
+    &__value {
+      position: relative;
+      width: 100%;
+      border: 1px solid $neutral-a;
+      overflow: hidden;
+      background-color: $white;
+
+      input {
+        cursor: pointer;
+        @include font-custom(14, 16, left, 'Montserrat', 400, $neutral-a);
+        padding: 8px 16px;
+        border: 0;
+        outline: none;
+        background-color: transparent;
+      }
+
+      img {
+        position: absolute;
+        pointer-events: none;
+        width: 14px;
+        height: 14px;
+        top: 50%;
+        right: 0;
+        transform: translate(-100%, -50%);
+        background-image: url('');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
+        transition: transform 400ms ease;
+      }
+    }
+
+    &[data-is-open='true'] &__list {
+      display: flex;
+    }
+
+    &__list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      overflow: hidden auto;
+      max-height: 200px;
+      background-color: $white;
+      border: 1px solid $neutral-a;
+      border-top: 0;
+      border-radius: 0 0 16px 16px;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      li {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        &:not(:last-of-type)::before {
+          position: absolute;
+          content: '';
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          height: 1px;
+          width: 75%;
+          background-color: $neutral-b;
+        }
+
+        button {
+          cursor: pointer;
+          @include font-custom(14, 16, center, 'Montserrat', 400, $neutral-a);
+          flex-grow: 1;
+          padding: 8px 16px;
+          background-color: $white;
+          border: 0;
+          outline: none;
+
+          &:hover {
+            background-color: $neutral-b;
+          }
+        }
+      }
+    }
+  }
+}
