@@ -1,67 +1,20 @@
 import { Formik, Form } from 'formik';
 
-import TextInput from '@components/inputs/TextInput';
+import CommonInput from '@components/inputs/CommonInput';
+import SelectInput from '@components/inputs/SelectInput';
+
+import { uf } from '../../../data/uf';
+import { initFormValues } from './types';
+
+import RegisterFormSchema from '../../../libraries/yup/RegisterFormSchema';
 
 import './styles.scss';
-
-type FormValues = {
-  name: string;
-  phone: string;
-  city: string;
-  email: string;
-  password: string;
-  confirmation: string;
-};
-
-function initFormValues(): FormValues {
-  return {
-    name: '',
-    phone: '',
-    city: '',
-    email: '',
-    password: '',
-    confirmation: '',
-  };
-}
 
 export default function RegisterForm() {
   return (
     <Formik
       initialValues={initFormValues()}
-      validate={values => {
-        const errors = initFormValues();
-
-        if (!values.name) {
-          errors.name = 'Campo obrigatório';
-        }
-        if (!values.phone) {
-          errors.phone = 'Campo obrigatório';
-        } else if (!/^\d{11}$/i.test(values.phone)) {
-          errors.phone = 'Número de telefone inválido';
-        }
-        if (!values.city) {
-          errors.city = 'Campo obrigatório';
-        }
-        if (!values.email) {
-          errors.email = 'Campo obrigatório';
-        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-          errors.email = 'Email inválido';
-        }
-        if (!values.password) {
-          errors.password = 'Campo obrigatório';
-        }
-        if (!values.confirmation) {
-          errors.confirmation = 'Campo obrigatório';
-        } else if (values.password !== values.confirmation) {
-          errors.confirmation = 'As senhas não conferem';
-        }
-
-        const hasErrors = Object.values(errors).some(error => error);
-
-        if (hasErrors) {
-          return errors;
-        }
-      }}
+      validationSchema={RegisterFormSchema}
       onSubmit={values => {
         console.log('Submeti os dados!', values);
       }}>
@@ -77,32 +30,40 @@ export default function RegisterForm() {
 
           <div className="register-form__form">
             <div className="register-form__form__name">
-              <TextInput label="Nome" name="name" />
+              <CommonInput label="Nome" name="name" type="text" />
             </div>
 
-            <div className="register-form__form__phone">
-              <TextInput label="Celular" name="phone" />
+            <div className="register-form__form__birthday">
+              <CommonInput label="Data de nascimento" name="birthday" type="date" />
+            </div>
+
+            <div className="register-form__form__uf">
+              <SelectInput label="Estado" name="uf" options={uf} />
             </div>
 
             <div className="register-form__form__city">
-              <TextInput label="Cidade" name="city" />
+              <CommonInput label="Cidade" name="city" type="text" />
             </div>
 
             <div className="register-form__form__email">
-              <TextInput label="E-mail" name="email" />
+              <CommonInput label="E-mail" name="email" type="email" />
+            </div>
+
+            <div className="register-form__form__email">
+              <CommonInput label="Telefone" name="phone" type="text" />
             </div>
 
             <div className="register-form__form__password">
-              <TextInput label="Senha" name="password" />
+              <CommonInput label="Senha" name="password" type="password" />
             </div>
 
             <div className="register-form__form__confirmation">
-              <TextInput label="Repita a senha" name="confirmation" />
+              <CommonInput label="Repita a senha" name="confirmation" type="password" />
             </div>
           </div>
 
           <div className="register-form__actions">
-            <button className="register-form__actions__submit" type="button">
+            <button className="register-form__actions__cancel" type="button">
               anterior
             </button>
 

@@ -1,5 +1,6 @@
 @use '../../../styles/scss/variables/colors' as *;
 @use '../../../styles/scss/mixins/typography' as *;
+@use '../../../styles/scss/mixins/buttons' as *;
 
 .register-form {
   flex-grow: 1;
@@ -26,10 +27,15 @@
     column-gap: 16px;
 
     &__name {
-      flex-basis: 100%;
+      flex-grow: 1;
     }
 
-    &__phone {
+    &__birthday {
+      flex-basis: 100px;
+      flex-grow: 1;
+    }
+
+    &__uf {
       flex-basis: 100px;
       flex-grow: 1;
     }
@@ -39,7 +45,11 @@
     }
 
     &__email {
-      flex-basis: 100%;
+      flex-grow: 1;
+    }
+
+    &__phone {
+      flex-grow: 1;
     }
 
     &__password {
@@ -48,6 +58,22 @@
 
     &__confirmation {
       flex-grow: 1;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &__cancel {
+      @include button-custom(2);
+      @include font-custom(14, 16, center, 'Montserrat', 500, $primary-b);
+    }
+
+    &__submit {
+      @include button-custom(1);
+      @include font-custom(14, 16, center, 'Montserrat', 400, $white);
     }
   }
 }
