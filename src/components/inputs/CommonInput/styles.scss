@@ -1,7 +1,7 @@
 @use '../../../styles/scss/variables/colors' as *;
 @use '../../../styles/scss/mixins/typography' as *;
 
-.text-input {
+.common-input {
   position: relative;
   flex-grow: 1;
   display: flex;
