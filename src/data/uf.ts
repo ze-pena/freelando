@@ -1,4 +1,5 @@
 export const uf = [
+  { text: 'Selecione', value: '' },
   { text: 'Acre', value: 'AC' },
   { text: 'Alagoas', value: 'AL' },
   { text: 'Amapá', value: 'AP' },
