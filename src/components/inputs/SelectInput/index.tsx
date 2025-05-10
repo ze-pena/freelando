@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useFormikContext, ErrorMessage } from 'formik';
 
-import styles from './styles.module.scss';
+import classNames from 'classnames';
+
+import './styles.scss';
 
 type OptionItem = {
   text: string;
@@ -10,45 +13,69 @@ type OptionItem = {
 type Props = {
   label: string;
   name: string;
-  value: string;
-  setter: React.Dispatch<React.SetStateAction<string>>;
-  optionList: OptionItem[];
+  options: OptionItem[];
 };
 
-export default function SelectInput(props: Props) {
-  const [option, setOption] = useState<OptionItem>({ text: 'Selecione', value: '' });
+export default function SelectInput({ label, name, options }: Props) {
+  const { setFieldValue } = useFormikContext();
+  const [option, setOption] = useState<OptionItem>(options[0]);
   const [isOpen, setIsOpen] = useState(false);
+  const componentRef = useRef<HTMLDivElement | null>(null);
 
-  const handleClickOption = (optionItem: OptionItem) => {
-    if (optionItem.value !== option.value) {
-      setOption(optionItem);
-      props.setter(optionItem.value);
+  const clickOption = (item: OptionItem) => {
+    if (item.value !== option.value) {
+      setOption(item);
+      setFieldValue('uf', item.value);
     }
   };
 
-  return (
-    <div className={styles['select-input']} onClick={() => setIsOpen(state => !state)}>
-      <span className={styles['select-input__label']}>{props.label}</span>
+  useEffect(() => {
+    document.addEventListener('click', event => {
+      const ref = componentRef.current;
+      const target = event.target as HTMLElement | null;
 
-      <div className={styles['select-input__combo-box']} data-is-open={isOpen}>
-        <div className={styles['select-input__combo-box__value']}>
-          <input type="text" value={option.text} readOnly />
+      if (ref && target) {
+        const tagName = target.tagName.toLowerCase();
+
+        if (!ref.contains(target)) {
+          setIsOpen(false);
+        }
+
+        if (ref.contains(target) && tagName === 'input') {
+          setIsOpen(true);
+        }
+
+        if (ref.contains(target) && tagName !== 'input') {
+          setIsOpen(false);
+        }
+      }
+    });
+  }, []);
+
+  return (
+    <div className="select-input" ref={componentRef}>
+      <span className="select-input__label">{label}</span>
+
+      <div className={classNames('select-input__combo-box', { '--is-open': isOpen })}>
+        <div className="select-input__combo-box__value">
+          <input type="text" name={name} value={option.text} readOnly />
           <img src="/icons/components/icon_expand_more.svg" alt="Seta de seleção da lista" />
         </div>
 
-        <ul className={styles['select-input__combo-box__list']}>
-          {props.optionList.map(optionItem => (
-            <li key={optionItem.value}>
-              <button
-                type="button"
-                value={optionItem.value}
-                onClick={() => handleClickOption(optionItem)}>
-                {optionItem.text}
+        <ul className="select-input__combo-box__list">
+          {options.map(item => (
+            <li key={item.value}>
+              <button type="button" onClick={() => clickOption(item)}>
+                {item.text}
               </button>
             </li>
           ))}
         </ul>
       </div>
+
+      <ErrorMessage name={name}>
+        {messages => <div className="select-input__error-message">{messages}</div>}
+      </ErrorMessage>
     </div>
   );
 }

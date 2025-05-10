@@ -2,6 +2,7 @@
 @use '../../../styles/scss/mixins/typography' as *;
 
 .select-input {
+  position: relative;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -13,21 +14,22 @@
   }
 
   &__combo-box {
+    z-index: 2;
     position: relative;
     display: flex;
     flex-direction: column;
     cursor: pointer;
 
-    &[data-is-open='false'] &__value {
+    &:not(.--is-open) &__value {
       border-radius: 16px;
     }
 
-    &[data-is-open='true'] &__value {
+    &.--is-open &__value {
       border-radius: 16px 16px 0 0;
-    }
 
-    &[data-is-open='true'] &__value > img {
-      transform: translate(-100%, -50%) rotate(180deg);
+      img {
+        transform: translate(-100%, -50%) rotate(180deg);
+      }
     }
 
     &__value {
@@ -62,7 +64,7 @@
       }
     }
 
-    &[data-is-open='true'] &__list {
+    &.--is-open &__list {
       display: flex;
     }
 
@@ -115,5 +117,12 @@
         }
       }
     }
+  }
+
+  &__error-message {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    @include font-custom(12, 14, left, 'Montserrat', 400, $warning);
   }
 }
