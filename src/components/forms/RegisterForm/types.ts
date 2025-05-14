@@ -1,4 +1,4 @@
-type FormValues = {
+export type FormValues = {
   name: string;
   birthday: string;
   uf: string;

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useFormikContext, ErrorMessage } from 'formik';
+import { type FieldError, useFormContext } from 'react-hook-form';
 
 import classNames from 'classnames';
 
@@ -14,10 +14,11 @@ type Props = {
   label: string;
   name: string;
   options: OptionItem[];
+  error?: FieldError;
 };
 
-export default function SelectInput({ label, name, options }: Props) {
-  const { setFieldValue } = useFormikContext();
+export default function SelectInput({ label, name, options, error }: Props) {
+  const { setValue } = useFormContext();
   const [option, setOption] = useState<OptionItem>(options[0]);
   const [isOpen, setIsOpen] = useState(false);
   const componentRef = useRef<HTMLDivElement | null>(null);
@@ -25,7 +26,7 @@ export default function SelectInput({ label, name, options }: Props) {
   const clickOption = (item: OptionItem) => {
     if (item.value !== option.value) {
       setOption(item);
-      setFieldValue('uf', item.value);
+      setValue('uf', item.value);
     }
   };
 
@@ -73,9 +74,7 @@ export default function SelectInput({ label, name, options }: Props) {
         </ul>
       </div>
 
-      <ErrorMessage name={name}>
-        {messages => <div className="select-input__error-message">{messages}</div>}
-      </ErrorMessage>
+      {!!error && <div className="select-input__error-message">{error.message}</div>}
     </div>
   );
 }
