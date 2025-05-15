@@ -1,27 +1,34 @@
 import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  RegisterFormSchema,
+  type RegisterFormSchemaType,
+} from '../../../libraries/zod/RegisterFormSchema';
 
 import CommonInput from '@components/inputs/CommonInput';
 import SelectInput from '@components/inputs/SelectInput';
 
 import { uf } from '../../../data/uf';
-import { type FormValues, initFormValues } from './types';
 
 import './styles.scss';
 
 export default function RegisterForm() {
-  const hookForm = useForm<FormValues>({
+  const hookForm = useForm<RegisterFormSchemaType>({
     mode: 'all',
-    defaultValues: initFormValues(),
+    resolver: zodResolver(RegisterFormSchema),
+    defaultValues: {
+      name: '',
+      birthday: undefined,
+      uf: '',
+      city: '',
+      email: '',
+      phone: '',
+      password: '',
+      confirmation: '',
+    },
   });
 
-  const password = hookForm.watch('password');
-
-  const validateConfirmation = {
-    required: (confirmation: string) => !!confirmation || 'Campo obrigatório',
-    equals: (confirmation: string) => confirmation === password || 'As senhas não conferem',
-  };
-
-  const onSubmit = (data: FormValues) => console.log(data);
+  const onSubmit = (data: RegisterFormSchemaType) => console.log(data);
 
   return (
     <FormProvider {...hookForm}>
@@ -39,17 +46,7 @@ export default function RegisterForm() {
               label="Nome"
               type="text"
               error={hookForm.formState.errors.name}
-              {...hookForm.register('name', {
-                required: 'Campo Obrigatório',
-                minLength: {
-                  value: 3,
-                  message: 'Insira o nome completo',
-                },
-                maxLength: {
-                  value: 50,
-                  message: 'O nome excede o limite máximo do campo',
-                },
-              })}
+              {...hookForm.register('name')}
             />
           </div>
 
@@ -57,47 +54,21 @@ export default function RegisterForm() {
             <CommonInput
               label="Data de nascimento"
               type="date"
+              {...hookForm.register('birthday')}
               error={hookForm.formState.errors.birthday}
-              {...hookForm.register('birthday', {
-                required: 'Campo Obrigatório',
-                min: {
-                  value: new Date('1960-01-01').toLocaleString('en-US'),
-                  message: 'Limite mínimo inválido',
-                },
-                max: {
-                  value: new Date().toLocaleString('en-US'),
-                  message: 'Limite máximo inválido',
-                },
-              })}
             />
           </div>
 
           <div className="register-form__form__uf">
-            <SelectInput
-              label="Estado"
-              options={uf}
-              {...hookForm.register('uf', {
-                required: 'Campo obrigatório',
-              })}
-            />
+            <SelectInput label="Estado" options={uf} {...hookForm.register('uf')} />
           </div>
 
           <div className="register-form__form__city">
             <CommonInput
               label="Cidade"
               type="text"
+              {...hookForm.register('city')}
               error={hookForm.formState.errors.city}
-              {...hookForm.register('city', {
-                required: 'Campo obrigatório',
-                minLength: {
-                  value: 3,
-                  message: 'Insira o nome completo da cidade',
-                },
-                maxLength: {
-                  value: 50,
-                  message: 'O nome da cidade excede o limite máximo do campo',
-                },
-              })}
             />
           </div>
 
@@ -105,10 +76,8 @@ export default function RegisterForm() {
             <CommonInput
               label="E-mail"
               type="email"
+              {...hookForm.register('email')}
               error={hookForm.formState.errors.email}
-              {...hookForm.register('email', {
-                required: 'Campo obrigatório',
-              })}
             />
           </div>
 
@@ -116,14 +85,8 @@ export default function RegisterForm() {
             <CommonInput
               label="Telefone"
               type="text"
+              {...hookForm.register('phone')}
               error={hookForm.formState.errors.phone}
-              {...hookForm.register('phone', {
-                required: 'Campo obrigatório',
-                pattern: {
-                  value: /^\d{11}$/i,
-                  message: 'Este número de telefone é inválido',
-                },
-              })}
             />
           </div>
 
@@ -131,18 +94,8 @@ export default function RegisterForm() {
             <CommonInput
               label="Senha"
               type="password"
+              {...hookForm.register('password')}
               error={hookForm.formState.errors.password}
-              {...hookForm.register('password', {
-                required: 'Campo obrigatório',
-                minLength: {
-                  value: 6,
-                  message: 'A senha deve conter no mínimo 6 caracteres',
-                },
-                maxLength: {
-                  value: 8,
-                  message: 'A senha deve conter no máximo 8 caracteres',
-                },
-              })}
             />
           </div>
 
@@ -150,11 +103,8 @@ export default function RegisterForm() {
             <CommonInput
               label="Repita a senha"
               type="password"
+              {...hookForm.register('confirmation')}
               error={hookForm.formState.errors.confirmation}
-              {...hookForm.register('confirmation', {
-                required: 'Campo obrigatório',
-                validate: validateConfirmation,
-              })}
             />
           </div>
         </div>

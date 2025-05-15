@@ -59,7 +59,7 @@ export default function SelectInput({ label, name, options, error }: Props) {
 
       <div className={classNames('select-input__combo-box', { '--is-open': isOpen })}>
         <div className="select-input__combo-box__value">
-          <input type="text" name={name} value={option.text} readOnly />
+          <input type="text" name={name} id={name} value={option.text} readOnly />
           <img src="/icons/components/icon_expand_more.svg" alt="Seta de seleção da lista" />
         </div>
 
